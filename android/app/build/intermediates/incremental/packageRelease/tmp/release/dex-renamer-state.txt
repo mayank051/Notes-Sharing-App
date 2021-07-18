@@ -1,0 +1,4 @@
+#Wed Jul 14 00:09:15 IST 2021
+base.0=/Users/mayankraj/Documents/React-Native-Projects/NotesSharingApp/android/app/build/intermediates/dex/release/mergeDexRelease/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

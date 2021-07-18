@@ -1,0 +1,14 @@
+com/notessharingapp/MainActivity.java
+ com.notessharingapp.MainActivity
+com/notessharingapp/ReactNativeFlipper.java
+ com.notessharingapp.ReactNativeFlipper
+ com.notessharingapp.ReactNativeFlipper$1
+ com.notessharingapp.ReactNativeFlipper$2
+ com.notessharingapp.ReactNativeFlipper$2$1
+com/notessharingapp/BuildConfig.java
+ com.notessharingapp.BuildConfig
+com/notessharingapp/MainApplication.java
+ com.notessharingapp.MainApplication
+ com.notessharingapp.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
