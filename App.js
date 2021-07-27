@@ -1,19 +1,20 @@
 import React from 'react';
-
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { PersistGate } from 'redux-persist/integration/react'
 
-import rootReducer from './store/rootReducer';
-let store = createStore(rootReducer);
 import Navigation from './navigation';
 import LoginScreen from './containers/LoginScreen';
+import configureStore from './store/configureStore';
+const { store, persistor } = configureStore();
 
 const App = () => {
+
   return(
-    <Provider store = {store}>
-    {/* <Navigation/> */}
-    <LoginScreen/>
-  </Provider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <LoginScreen />
+      </PersistGate>
+    </Provider>
   );
 }
 

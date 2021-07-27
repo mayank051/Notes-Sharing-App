@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
@@ -14,12 +15,22 @@ const LoginScreen = (props) => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [showSignup, setShowSignup] = useState(false);
 
+    const state = useSelector(state => state);
+    const dispatch = useDispatch();
+    // console.log("logged in user", state?.auth?.email);
+
+    useEffect(() => {
+        const isLoggedIn = state?.auth?.email ? true : false;
+        setLoggedIn(isLoggedIn);
+    }, []);
+
     const loginUser = () => {
         auth()
             .signInWithEmailAndPassword(email, password)
             .then(() => {
-                console.log('User signed in!');
                 setLoggedIn(true);
+                dispatch({ type: "LOGIN", payload: { email: email } })
+                console.log('User signed in!', state);
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
