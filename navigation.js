@@ -6,6 +6,7 @@ import HomeScreen from './containers/HomeScreen';
 import DisplaySubjectsScreen from './containers/DisplaySubjectsScreen';
 import AddNotesScreen from './containers/AddNotesScreen';
 import DisplayNotes from './containers/DisplayNotes';
+import UploadSuccess from './containers/UploadSuccessScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ function Navigation() {
         <Stack.Screen name="Subjects" component={DisplaySubjectsScreen} />
         <Stack.Screen name="Add Notes" component={AddNotesScreen} />
         <Stack.Screen name="Display Notes" component={DisplayNotes} />
+        <Stack.Screen name="Upload Success" component={UploadSuccess} />
       </Stack.Navigator>
     </NavigationContainer>
   );

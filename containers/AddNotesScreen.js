@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderText from '../components/HeaderText';
 import Tile from '../components/Tile';
@@ -15,6 +15,7 @@ import { pathOr } from 'ramda';
 
 const AddNotesScreen = (props) => {
     const [topic, setTopic] = useState('');
+    const [loader, setLoader] = useState(false);
     const [imagePath, setImagePath] = useState("");
     const state = useSelector(state => state);
     const dispatch = useDispatch();
@@ -28,11 +29,13 @@ const AddNotesScreen = (props) => {
         task
             .then(snapshot => {
                 console.log('Image uploaded to the bucket!');
+                setLoader(false);
+                props.navigation.navigate("Upload Success");
                 //getUploadedUrl(type);
             })
             .catch(e => {
                 console.log('uploading image error => ', e);
-                //setLoading(false);
+                setLoader(false);
                 //navigation.navigate('After Upload', { status: 'Failure', e })
             });
     }
@@ -56,6 +59,7 @@ const AddNotesScreen = (props) => {
                 let path = pathOr('', ['assets', 0, 'uri'], response);
                 console.log('Mayank::', path);
                 setImagePath(path);
+                setLoader(true);
                 uploadImageToStorage(path, topic, 'image');
             }
         });
@@ -71,6 +75,9 @@ const AddNotesScreen = (props) => {
                 <CustomButton label={'Upload Image'} onClick={() => uploadImage()} />
                 <CustomButton label={'Upload PDF'} onClick={() => uploadPDF()} />
             </View>
+            {
+                loader && <ActivityIndicator color='red' animating={true} />
+            }
 
         </View>
     )
