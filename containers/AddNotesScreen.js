@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderText from '../components/HeaderText';
 import Tile from '../components/Tile';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
+import { notesImage } from '../assets/images/index';
 
 import storage from '@react-native-firebase/storage';
 import fireStore from '@react-native-firebase/firestore';
@@ -21,6 +22,41 @@ const AddNotesScreen = (props) => {
     const dispatch = useDispatch();
     const subject = props?.route?.params?.subject;
 
+    const insertToDataBase = (url, type) => {
+        fireStore().collection(subject).doc(topic).set({
+            url,
+            type,
+            name: topic
+        }, { merge: true })
+            .then(() => {
+                console.log("Document successfully written!");
+                setLoader(false);
+                props.navigation.navigate("Upload Success");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                setLoader(false);
+                // props.navigation.navigate("Upload Success");
+            });
+    }
+
+    const getUploadedUrl = (type) => {
+        let publicUrl = '';
+        const reference = storage()
+            .ref(`/${subject}/${topic}`)
+            .getDownloadURL()
+            .then(url => {
+                publicUrl = url;
+                console.log('hello url', url);
+                insertToDataBase(url, type);
+            })
+            .catch(e => {
+                console.log('something is wrong', e);
+                setLoader(false);
+                //navigation.navigate('After Upload', {status: 'Failure'})
+            })
+    }
+
     const uploadImageToStorage = (path, name, type) => {
         // setLoading(true);
         console.log("Helloooo", subject, props);
@@ -29,14 +65,11 @@ const AddNotesScreen = (props) => {
         task
             .then(snapshot => {
                 console.log('Image uploaded to the bucket!');
-                setLoader(false);
-                props.navigation.navigate("Upload Success");
-                //getUploadedUrl(type);
+                getUploadedUrl(type);
             })
             .catch(e => {
                 console.log('uploading image error => ', e);
                 setLoader(false);
-                //navigation.navigate('After Upload', { status: 'Failure', e })
             });
     }
 
@@ -73,11 +106,15 @@ const AddNotesScreen = (props) => {
             <CustomInput onChange={val => setTopic(val)} title={'Notes Description'} placeHolder={'Enter Notes Description'} />
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <CustomButton label={'Upload Image'} onClick={() => uploadImage()} />
-                <CustomButton label={'Upload PDF'} onClick={() => uploadPDF()} />
+                {/* <CustomButton label={'Upload PDF'} onClick={() => uploadPDF()} /> */}
             </View>
             {
                 loader && <ActivityIndicator color='red' animating={true} />
             }
+            {/* <Image
+                style={styles.image}
+                source={notesImage}
+            /> */}
 
         </View>
     )

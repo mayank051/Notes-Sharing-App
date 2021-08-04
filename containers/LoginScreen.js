@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import HeaderText from '../components/HeaderText';
 import auth from '@react-native-firebase/auth';
+import { jssateBackground, jssateLogo } from '../assets/images/index';
 
 import Navigation from '../navigation';
 import SignUpScreen from './SignUpScreen';
@@ -47,6 +48,10 @@ const LoginScreen = (props) => {
 
     const loginForm = () => {
         return showSignup ? (<SignUpScreen/>) : ( <View style = {styles.container}>
+            <Image
+                style={styles.image}
+                source={jssateLogo}
+            />
             <HeaderText/>
             <CustomInput onChange = {val => setEmail(val)} title = {'Email'} placeHolder = {'Enter Your Email Address'}/>
             <CustomInput onChange = {val => setPassword(val)} title = {'Password'} placeHolder = {'Enter Your Password'} isPassword = {true}/>
@@ -79,7 +84,10 @@ const styles = StyleSheet.create({
     signup: {
         textDecorationLine: 'underline',
         color: '#0040ff'
-    }
+    },
+    image: {
+        marginBottom: '10%'
+    },
 })
 
 export default LoginScreen;
